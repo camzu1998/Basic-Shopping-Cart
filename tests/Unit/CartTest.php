@@ -18,7 +18,7 @@ class CartTest extends TestCase
     public function test_create_cart()
     {
         //Creating cart
-        $cart = Cart::create();
+        $cart = Cart::factory()->create();
 
         //Check if cart created
         $this->assertIsObject($cart);
