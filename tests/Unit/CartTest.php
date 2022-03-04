@@ -49,7 +49,7 @@ class CartTest extends TestCase
      *
      * @return void
      */
-    public function test_delete_user()
+    public function test_delete_cart()
     {
         //Creating task
         $cart = Cart::factory()->create();
