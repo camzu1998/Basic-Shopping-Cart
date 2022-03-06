@@ -22,9 +22,10 @@ Route::get('/products', [ProductController::class, 'index']); //list all product
 Route::get('/product', [ProductController::class, 'create']); //form to add product to the catalog
 Route::post('/product', [ProductController::class, 'store']); //add product to the catalog
 
-Route::get('/product/{product_id}', [ProductController::class, 'edit']); //form to update product name / update product price
-Route::put('/product/{product_id}', [ProductController::class, 'update']); //update product name / update product price
-Route::delete('/product/{product_id}', [ProductController::class, 'destroy']); //remove product from the catalog
+Route::get('/product/{product}', [ProductController::class, 'edit']); //form to update product name / update product price
+Route::put('/product/{product}', [ProductController::class, 'update']); //update product name / update product price
+Route::delete('/product/{product}', [ProductController::class, 'destroy']); //remove product from the catalog
 //Cart Product URIs
 Route::get('/cart', [CartController::class, 'index']); //list all products in the cart
-Route::delete('/cart/{product_id}', [CartController::class, 'destroy']); //remove product from the cart
+Route::post('/cart', [CartProductController::class, 'store']); //add product to the cart
+Route::delete('/cart/{product}', [CartProductController::class, 'destroy']); //remove product from the cart

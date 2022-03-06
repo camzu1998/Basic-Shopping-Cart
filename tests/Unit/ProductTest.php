@@ -11,52 +11,52 @@ class ProductTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A cart create test
+     * A product create test
      *
      * @return void
      */
     public function test_create_product()
     {
-        //Creating cart
+        //Creating product
         $product = Product::factory()->create();
 
-        //Check if cart created
+        //Check if product created
         $this->assertIsObject($product);
         $this->assertModelExists($product);
     }
 
     /**
-     * A cart change test
+     * A product change test
      *
      * @return void
      */
     public function test_update_product()
     {
-        //Creating cart
+        //Creating product
         $product = Product::factory()->create();
-        //Change cart date
+        //Change product name
         $product->name = 'name-test';
         $product->save();
 
-        //Check if changed cart is in database
+        //Check if changed product is in database
         $this->assertDatabaseHas('products', [
             'name' => 'name-test',
         ]);
     }
 
     /**
-     * A delete cart test
+     * A delete product test
      *
      * @return void
      */
     public function test_delete_product()
     {
-        //Creating task
+        //Creating product
         $product = Product::factory()->create();
-        //Delete task
+        //Delete product
         $product->delete();
 
-        //Check if cart is deleted
+        //Check if product is deleted
         $this->assertModelMissing($product);
     }
 }
