@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\FormProductRequest;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -33,15 +32,27 @@ class ProductController extends Controller
     /**
      * Store a newly created product in database.
      *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
-     * @return \Illuminate\Routing\Redirector
+     * @param  \App\Http\Requests\FormProductRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(FormProductRequest $request)
     {
         $data = $request->validated();
         $product = Product::factory()->create($data);
 
         return $this->edit($product, 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Product $product)
+    {
+        $data['product'] = $product;
+        return response()->view('product', $data);
     }
 
     /**
@@ -60,11 +71,11 @@ class ProductController extends Controller
     /**
      * Update the specified product in database.
      *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
+     * @param  \App\Http\Requests\FormProductRequest  $request
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(FormProductRequest $request, Product $product)
     {
         $data = $request->validated();
 
