@@ -54,11 +54,15 @@
                 <div class="col-3"></div>
             </div>
             <div class="row my-4 justify-content-center">
-                @if (session('status') != '')
-                    <div class="ms-alert ms-success ms-text-center">
-                        {{ session('status') }}
-                    </div>
-                @endif
+                <div class="col-3"></div>
+                <div class="col-6">
+                    @if (session('status') != '')
+                        <div class="ms-alert ms-success ms-text-center">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                </div>
+                <div class="col-3"></div>
             </div>
         </div>
 
