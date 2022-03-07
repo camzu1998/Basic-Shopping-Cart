@@ -14,6 +14,9 @@
                 <div class="col-3"></div>
                 <div class="col-6">
                     <h3>Products</h3>
+                    <br>
+                    <a href="/product" class="mr-4">Create product</a>
+                    <a href="/cart" class="mx-2">Cart products list</a>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -27,6 +30,7 @@
                                 <th>ID</th>
                                 <th>Product name</th>
                                 <th>Price</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,6 +39,7 @@
                                         <td>{{ $product->id }}</td>
                                         <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
                                         <td>{{ $product->price }} zł</td>
+                                        <td><a href="/product/{{ $product->id }}/edit">Edit</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>

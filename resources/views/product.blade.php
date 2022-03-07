@@ -29,6 +29,14 @@
                 </form>
                 <div class="col-3"></div>
             </div>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <a href="/products" class="mr-4">Back to catalog</a>
+                    <a href="/cart" class="mx-2">Cart products list</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
         </div>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dark-mode-switcher@0.0.1/dist/dark.min.js"></script>

@@ -42,6 +42,25 @@
                 </form>
                 <div class="col-3"></div>
             </div>
+            @if(!empty($product))
+                <div class="row">
+                    <div class="col-3"></div>
+                    <form class="col-6" method="post" action="/product/{{ $product->id }}">
+                        @method('DELETE')
+                        @csrf
+                        <div class="ms-form-group"><button class="ms-btn ms-danger ms-fullwidth ms-medium" type="submit">Delete product</button></div>
+                    </form>
+                    <div class="col-3"></div>
+                </div>
+            @endif
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <a href="/products" class="mr-4">Back to catalog</a>
+                    <a href="/product" class="mx-2">Create another product</a>
+                </div>
+                <div class="col-3"></div>
+            </div>
         </div>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dark-mode-switcher@0.0.1/dist/dark.min.js"></script>
