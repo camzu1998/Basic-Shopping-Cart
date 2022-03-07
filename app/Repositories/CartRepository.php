@@ -44,7 +44,6 @@ class CartRepository
         if(empty($cart->created_at))
         {
             $session->forget('secure_key');
-//            abort(404, 'Cart not found.');
             $cart = $this->create_cart($session);
         }
 
@@ -77,29 +76,22 @@ class CartRepository
      * @param array $data
      * @param mixed $session
      * @param App\Models\Product $product
-     * @return App\Models\CartProduct
+     * @return App\Models\CartProduct | \Illuminate\Http\RedirectResponse
      */
     public function add_product(array $data, Product $product, mixed $session)
     {
         $qty = 0;
+        $cart = $this->get_cart($session);
 
-        if( $session->missing('secure_key') ){
-            $cart = $this->create_cart($session);
-        }else{
-            $cart = $this->get_cart($session);
-        }
-
+        //Change qty if product exist
         $cart_product = CartProduct::cart($cart->id)->product($product->id)->first();
         if(!empty($cart_product->id))
             return $this->update_product($data, $product, $session);
 
+        //Get all cart products for checking max number of products in cart
         $cart_products = CartProduct::cart($cart->id)->get();
-        foreach($cart_products as $cart_product){
-            $qty += $cart_product->qty;
-        }
-
-        if($qty == 3 || $qty+$data['qty'] > 3)
-            abort(400, 'Qty would be over limit');
+        if(count($cart_products) == 3)
+            return redirect('/product/'.$product->id)->withErrors(['cart_qty' => 'Cart is full!']);
 
         $cart->updated_at = date('Y-m-d H:i:s');
         $cart->save();
@@ -116,7 +108,7 @@ class CartRepository
      * @param array $data
      * @param mixed $session
      * @param App\Models\Product $product
-     * @return App\Models\CartProduct
+     * @return App\Models\CartProduct | \Illuminate\Http\RedirectResponse
      */
     public function update_product(array $data, Product $product, mixed $session)
     {
@@ -126,16 +118,11 @@ class CartRepository
         }else{
             $cart = $this->get_cart($session);
         }
-
-        $cart_products = CartProduct::cart($cart->id)->get();
-        foreach($cart_products as $cart_product){
-            $qty += $cart_product->qty;
-        }
-
-        if($qty == 3 || $qty+$data['qty'] > 3)
-            abort(400, 'Qty would be over limit');
-
+        //Check if product exist in cart
         $cart_product = CartProduct::cart($cart->id)->product($product->id)->first();
+        if(empty($cart_product->id))
+            return redirect('/product/'.$product->id)->withErrors(['cart_product' => 'Product is not in cart!']);
+
         $cart_product->qty += $data['qty'];
         $cart_product->save();
 

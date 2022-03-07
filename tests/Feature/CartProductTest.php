@@ -35,11 +35,6 @@ class CartProductTest extends TestCase
         $response = $this->post('/cart/'.$this->product->id, [
             'qty'  => 5,
         ]);
-        $response->assertSessionHasErrors(['qty']);
-
-        $response = $this->post('/cart/'.$this->product->id, [
-            'qty'  => 2,
-        ]);
         $response->assertSessionHas('status');
     }
     /**
@@ -57,11 +52,6 @@ class CartProductTest extends TestCase
 
         $response = $this->put('/cart/'.$this->product->id, [
             'qty'  => 2,
-        ]);
-        $response->assertStatus(400)->assertSee('Qty');
-
-        $response = $this->put('/cart/'.$this->product->id, [
-            'qty'  => 1,
         ]);
         $response->assertRedirect('/cart');
         $response->assertSessionHas('status');
