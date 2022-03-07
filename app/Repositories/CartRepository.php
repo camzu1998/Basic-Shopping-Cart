@@ -80,13 +80,17 @@ class CartRepository
      */
     public function add_product(array $data, Product $product, mixed $session)
     {
-        $qty = 0;
         $cart = $this->get_cart($session);
 
         //Change qty if product exist
         $cart_product = CartProduct::cart($cart->id)->product($product->id)->first();
         if(!empty($cart_product->id))
-            return $this->update_product($data, $product, $session);
+        {
+            $cart_product->qty += $data['qty'];
+            $cart_product->save();
+
+            return $cart_product;
+        }
 
         //Get all cart products for checking max number of products in cart
         $cart_products = CartProduct::cart($cart->id)->get();
@@ -107,23 +111,20 @@ class CartRepository
      *
      * @param array $data
      * @param mixed $session
-     * @param App\Models\Product $product
+     * @param App\Models\CartProduct $cart_product
      * @return App\Models\CartProduct | \Illuminate\Http\RedirectResponse
      */
-    public function update_product(array $data, Product $product, mixed $session)
+    public function update_product(array $data, CartProduct $cart_product, mixed $session)
     {
-        $qty = 0;
         if( $session->missing('secure_key') ){
             abort(400, 'Cart is not created. Add previous some products.');
         }else{
             $cart = $this->get_cart($session);
         }
-        //Check if product exist in cart
-        $cart_product = CartProduct::cart($cart->id)->product($product->id)->first();
-        if(empty($cart_product->id))
-            return redirect('/product/'.$product->id)->withErrors(['cart_product' => 'Product is not in cart!']);
+        $cart_product->qty = $data['qty'];
+        if($cart_product->qty <= 0)
+            return redirect('/cart')->withErrors(['cart_product' => 'Cart product qty can not be minus or zero! If you would like to delete product please use X button in cart.']);
 
-        $cart_product->qty += $data['qty'];
         $cart_product->save();
 
         $cart->updated_at = date('Y-m-d H:i:s');

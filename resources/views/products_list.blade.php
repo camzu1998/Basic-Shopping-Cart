@@ -53,6 +53,13 @@
                 </div>
                 <div class="col-3"></div>
             </div>
+            <div class="row my-4 justify-content-center">
+                @if (session('status') != '')
+                    <div class="ms-alert ms-success ms-text-center">
+                        {{ session('status') }}
+                    </div>
+                @endif
+            </div>
         </div>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dark-mode-switcher@0.0.1/dist/dark.min.js"></script>

@@ -44,7 +44,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified product.
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response

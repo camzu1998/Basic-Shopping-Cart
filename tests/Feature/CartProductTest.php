@@ -36,6 +36,7 @@ class CartProductTest extends TestCase
             'qty'  => 5,
         ]);
         $response->assertSessionHas('status');
+        $response->assertSessionHas('secure_key');
     }
     /**
      * An update cart product qty test
@@ -44,13 +45,16 @@ class CartProductTest extends TestCase
      */
     public function test_update_cart_product_qty()
     {
-        $response = $this->post('/cart/'.$this->product->id, [
-            'qty'  => 2,
+        //Creating cart
+        $cart = Cart::factory()->create();
+        //Creating cart product
+        $cart_product = CartProduct::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $this->product->id,
+            'qty' => 1
         ]);
-        $response->assertSessionHas('status');
-        $response->assertSessionHas('secure_key');
 
-        $response = $this->put('/cart/'.$this->product->id, [
+        $response = $this->withSession(['secure_key' => $cart->secure_key])->put('/cart/'.$cart_product->id, [
             'qty'  => 2,
         ]);
         $response->assertRedirect('/cart');

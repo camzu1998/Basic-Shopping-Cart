@@ -7,6 +7,7 @@
         <title>Cart</title>
 
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/minstyle.io@1.1.0/css/minstyle.io.css">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
             *{
                 box-sizing: border-box;
@@ -40,11 +41,17 @@
                                 @foreach($cart_products as $cart_product)
                                     <tr>
                                         <td><a href="/product/{{ $cart_product->product_id }}">{{ $cart_product->name }}</a></td>
-                                        <td>{{ $cart_product->qty }}</td>
+                                        <td>
+                                            <form action="/cart/{{ $cart_product->id }}" method="post">
+                                                @method('PUT') @csrf
+                                                <input type="number" placeholder="Qty" name="qty" min="1" step="1" value="{{ $cart_product->qty }}" style="width: 100px !important;">
+                                                <button type="submit" title="Save product qty"><i class="fa-regular fa-floppy-disk"></i></button>
+                                            </form>
+                                        </td>
                                         <td>{{ $cart_product->price }} zł</td>
                                         <td>{{ $cart_product->price*$cart_product->qty }} zł</td>
                                         <td>
-                                            <form action="/cart/{{ $cart_product->id }}" method="post">@method('DELETE')@csrf<button type="submit">X</button></form>
+                                            <form action="/cart/{{ $cart_product->id }}" method="post">@method('DELETE')@csrf<button type="submit"><i class="fa-solid fa-xmark"></i></button></form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -61,8 +68,18 @@
                 <div class="col-6">
                     <div class="row my-4 justify-content-center">
                         @if (session('status') != '')
-                            <div class="ms-alert ms-success">
+                            <div class="ms-alert ms-success ms-text-center">
                                 {{ session('status') }}
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="ms-alert ms-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                         @endif
                     </div>

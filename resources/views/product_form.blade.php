@@ -63,7 +63,7 @@
 
             <div class="row my-4 justify-content-center">
                 @if (session('status') != '')
-                    <div class="ms-alert ms-success">
+                    <div class="ms-alert ms-success ms-text-center">
                         {{ session('status') }}
                     </div>
                 @endif
