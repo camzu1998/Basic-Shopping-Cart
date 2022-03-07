@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class CartProductTest extends TestCase
 {
-//    use RefreshDatabase;
+    use RefreshDatabase;
 
     protected $cart;
     protected $product;

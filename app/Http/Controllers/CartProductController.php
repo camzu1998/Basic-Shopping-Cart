@@ -2,12 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCartProductRequest;
-use App\Http\Requests\UpdateCartProductRequest;
+use App\Http\Requests\FormCartProductRequest;
 use App\Models\CartProduct;
+use App\Models\Product;
+use App\Repositories\CartRepository;
 
 class CartProductController extends Controller
 {
+    /**
+     * The user repository instance.
+     */
+    protected $cart;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \App\Repositories\CartRepository  $cart
+     * @return void
+     */
+    public function __construct(CartRepository $cart)
+    {
+        $this->cart = $cart;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,46 +48,33 @@ class CartProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCartProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\FormCartProductRequest  $request
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreCartProductRequest $request)
+    public function store(FormCartProductRequest $request, Product $product)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CartProduct  $cartProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CartProduct $cartProduct)
-    {
-        //
-    }
+        $cart_product = $this->cart->add_product($data, $product, $request->session());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CartProduct  $cartProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CartProduct $cartProduct)
-    {
-        //
+        return redirect('/product/'.$product->id)->with('status', 'Product added');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCartProductRequest  $request
-     * @param  \App\Models\CartProduct  $cartProduct
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\FormCartProductRequest  $request
+     * @param  \App\Models\Product  $cartProduct
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateCartProductRequest $request, CartProduct $cartProduct)
+    public function update(FormCartProductRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+
+        $cart_product = $this->cart->update_product($data, $product, $request->session());
+
+        return redirect('/cart')->with('status', 'Product qty updated');
     }
 
     /**

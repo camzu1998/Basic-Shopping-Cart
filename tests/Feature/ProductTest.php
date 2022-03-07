@@ -10,8 +10,9 @@ use App\Models\Product;
 class ProductTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
-     * A products list test
+     * A products list view test
      *
      * @return void
      */
@@ -25,6 +26,23 @@ class ProductTest extends TestCase
         $response = $this->get('/products');
         $response->assertStatus(200)->assertSee($product->name);
     }
+
+    /**
+     * A product view test
+     *
+     * @return void
+     */
+    public function test_show_product()
+    {
+        $response = $this->get('/product/99');
+        $response->assertStatus(404);
+
+        $product = Product::factory()->create();
+
+        $response = $this->get('/product/'.$product->id);
+        $response->assertStatus(200)->assertSee($product->name);
+    }
+
     /**
      * A create product form test
      *
@@ -44,6 +62,7 @@ class ProductTest extends TestCase
         ]);
         $response->assertStatus(201);
     }
+
     /**
      * An update product form test
      *
@@ -51,11 +70,11 @@ class ProductTest extends TestCase
      */
     public function test_update_product_form()
     {
-        $response = $this->get('/product/99');
+        $response = $this->get('/product/99/edit');
         $response->assertStatus(404);
 
         $product = Product::factory()->create();
-        $response = $this->get('/product/'.$product->id);
+        $response = $this->get('/product/'.$product->id.'/edit');
         $response->assertStatus(200)->assertSee($product->name);
 
         $response = $this->put('/product/'.$product->id, [
@@ -64,6 +83,7 @@ class ProductTest extends TestCase
         ]);
         $response->assertStatus(201);
     }
+
     /**
      * A delete product test
      *

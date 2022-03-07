@@ -10,14 +10,14 @@
     </head>
     <body>
         <div class="container">
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-3"></div>
                 <div class="col-6">
                     <h3>Products</h3>
                 </div>
                 <div class="col-3"></div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-3"></div>
                 <div class="col-6">
                     @if (count($products) > 0)
@@ -27,15 +27,13 @@
                                 <th>ID</th>
                                 <th>Product name</th>
                                 <th>Price</th>
-                                <th></th>
-                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach($products as $product)
                                     <tr>
                                         <td>{{ $product->id }}</td>
-                                        <td>{{ $product->name }}</td>
+                                        <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
                                         <td>{{ $product->price }} zł</td>
                                     </tr>
                                 @endforeach
