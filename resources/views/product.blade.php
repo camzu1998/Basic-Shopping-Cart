@@ -41,8 +41,8 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <div class="row my-4">
-                        {{ $status ?? '' }}
+                    <div class="row my-4 justify-content-center">
+                        {{ session('status') ?? '' }}
                     </div>
 
                     @if ($errors->any())

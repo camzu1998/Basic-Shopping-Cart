@@ -54,6 +54,9 @@
             <div class="row mt-2">
                 <div class="col-3"></div>
                 <div class="col-6">
+                    <div class="row my-4 justify-content-center">
+                        {{ session('status') ?? '' }}
+                    </div>
                     <p>Total cart price: {{ $total_value }} zł</p><br>
                     <a href="/products">Back to catalog</a>
                 </div>

@@ -18,7 +18,7 @@ class CartRepository
     }
 
     /**
-     * Find a cart
+     * Create a cart
      *
      * @param mixed $session
      * @return App\Models\Cart
