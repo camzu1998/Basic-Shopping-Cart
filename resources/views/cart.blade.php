@@ -7,6 +7,11 @@
         <title>Cart</title>
 
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/minstyle.io@1.1.0/css/minstyle.io.css">
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -55,7 +60,11 @@
                 <div class="col-3"></div>
                 <div class="col-6">
                     <div class="row my-4 justify-content-center">
-                        {{ session('status') ?? '' }}
+                        @if (session('status') != '')
+                            <div class="ms-alert ms-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                     </div>
                     <p>Total cart price: {{ $total_value }} zł</p><br>
                     <a href="/products">Back to catalog</a>

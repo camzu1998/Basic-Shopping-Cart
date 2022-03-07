@@ -7,6 +7,11 @@
         <title>Product form</title>
 
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/minstyle.io@1.1.0/css/minstyle.io.css">
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -42,18 +47,22 @@
                 <div class="col-3"></div>
                 <div class="col-6">
                     <div class="row my-4 justify-content-center">
-                        {{ session('status') ?? '' }}
-                    </div>
+                        @if (session('status') != '')
+                            <div class="ms-alert ms-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                        @if ($errors->any())
+                            <div class="ms-alert ms-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
                 </div>
                 <div class="col-3"></div>
             </div>

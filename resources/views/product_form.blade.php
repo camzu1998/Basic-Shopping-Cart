@@ -7,6 +7,11 @@
         <title>Product form</title>
 
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/minstyle.io@1.1.0/css/minstyle.io.css">
+        <style>
+            *{
+                box-sizing: border-box;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -21,6 +26,7 @@
                 </div>
                 <div class="col-3"></div>
             </div>
+
             <div class="row mt-2">
                 <div class="col-3"></div>
                 <form class="col-6" method="POST" action="@if(!empty($product))/product/{{ $product->id }}@else /product @endif">
@@ -42,6 +48,7 @@
                 </form>
                 <div class="col-3"></div>
             </div>
+
             @if(!empty($product))
                 <div class="row">
                     <div class="col-3"></div>
@@ -53,6 +60,25 @@
                     <div class="col-3"></div>
                 </div>
             @endif
+
+            <div class="row my-4 justify-content-center">
+                @if (session('status') != '')
+                    <div class="ms-alert ms-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="ms-alert ms-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
@@ -61,6 +87,7 @@
                 </div>
                 <div class="col-3"></div>
             </div>
+
         </div>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dark-mode-switcher@0.0.1/dist/dark.min.js"></script>
