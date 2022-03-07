@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartProduct;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -65,24 +66,25 @@ class CartProductTest extends TestCase
         $response->assertRedirect('/cart');
         $response->assertSessionHas('status');
     }
-//    /**
-//     * A delete cart product form cart
-//     *
-//     * @return void
-//     */
-//    public function test_update_product_form()
-//    {
-//        $response = $this->get('/product/99/edit');
-//        $response->assertStatus(404);
-//
-//        $product = Product::factory()->create();
-//        $response = $this->get('/product/'.$product->id.'/edit');
-//        $response->assertStatus(200)->assertSee($product->name);
-//
-//        $response = $this->put('/product/'.$product->id, [
-//            'name' => 'UpdateNameTest',
-//            'price' => 99.99
-//        ]);
-//        $response->assertStatus(201);
-//    }
+    /**
+     * A delete cart product form cart
+     *
+     * @return void
+     */
+    public function test_update_product_form()
+    {
+        //Creating cart
+        $cart = Cart::factory()->create();
+        //Creating cart product
+        $cart_product = CartProduct::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $this->product->id,
+            'qty' => 1
+        ]);
+
+        //Delete cart product
+        $response = $this->delete('/cart/'.$cart_product->id);
+        $response->assertRedirect('/cart');
+        $response->assertSessionHas('status');
+    }
 }

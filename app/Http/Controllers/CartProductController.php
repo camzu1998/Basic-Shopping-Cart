@@ -81,10 +81,12 @@ class CartProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\CartProduct  $cartProduct
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(CartProduct $cartProduct)
     {
-        //
+        $cartProduct->delete();
+
+        return redirect('/cart')->with('status', 'Product deleted');
     }
 }
