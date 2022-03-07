@@ -97,7 +97,7 @@ class ProductTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->delete('/product/'.$product->id);
-        $response->assertJson(['status' => true]);
+        $response->assertRedirect('/products');
 
         $response = $this->get('/products');
         $response->assertDontSee($product->name);

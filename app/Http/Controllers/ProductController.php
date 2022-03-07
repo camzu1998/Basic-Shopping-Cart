@@ -92,12 +92,12 @@ class ProductController extends Controller
      * Remove the specified product from database.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Product $product)
     {
         $product->delete();
 
-        return response()->json(['status' => true]);
+        return redirect('/products')->with('status', 'Product deleted');
     }
 }
