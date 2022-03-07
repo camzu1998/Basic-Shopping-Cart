@@ -25,16 +25,22 @@
                             <thead>
                             <tr>
                                 <th>Product name</th>
+                                <th>Qty</th>
                                 <th>Price for unit</th>
                                 <th>Total price</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach($cart_products as $cart_product)
                                     <tr>
                                         <td><a href="/product/{{ $cart_product->product_id }}">{{ $cart_product->name }}</a></td>
+                                        <td>{{ $cart_product->qty }}</td>
                                         <td>{{ $cart_product->price }} zł</td>
                                         <td>{{ $cart_product->price*$cart_product->qty }} zł</td>
+                                        <td>
+                                            <form action="/cart/{{ $cart_product->id }}" method="post">@method('DELETE')@csrf<button type="submit">X</button></form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -48,7 +54,8 @@
             <div class="row mt-2">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <p>Total cart price: {{ $total_value }} zł</p>
+                    <p>Total cart price: {{ $total_value }} zł</p><br>
+                    <a href="/products">Back to catalog</a>
                 </div>
                 <div class="col-3"></div>
             </div>
