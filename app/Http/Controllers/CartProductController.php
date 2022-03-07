@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormCartProductRequest;
+use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
 use App\Repositories\CartRepository;
@@ -10,12 +11,12 @@ use App\Repositories\CartRepository;
 class CartProductController extends Controller
 {
     /**
-     * The user repository instance.
+     * The cart repository instance.
      */
     protected $cart;
 
     /**
-     * Create a new controller instance.
+     * Create a new CartRepository instance.
      *
      * @param  \App\Repositories\CartRepository  $cart
      * @return void
@@ -24,29 +25,8 @@ class CartProductController extends Controller
     {
         $this->cart = $cart;
     }
-
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created cart product in database.
      *
      * @param  \App\Http\Requests\FormCartProductRequest  $request
      * @param  \App\Models\Product  $product
@@ -62,7 +42,7 @@ class CartProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified cart product in database.
      *
      * @param  \App\Http\Requests\FormCartProductRequest  $request
      * @param  \App\Models\Product  $cartProduct
@@ -78,13 +58,17 @@ class CartProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified cart product from database.
      *
      * @param  \App\Models\CartProduct  $cartProduct
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(CartProduct $cartProduct)
     {
+        $cart = Cart::find($cartProduct->cart_id);
+        $cart->updated_at = date('Y-m-d H:i:s');
+        $cart->save();
+
         $cartProduct->delete();
 
         return redirect('/cart')->with('status', 'Product deleted');

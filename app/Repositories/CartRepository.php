@@ -44,10 +44,31 @@ class CartRepository
         if(empty($cart->created_at))
         {
             $session->forget('secure_key');
-            abort(404, 'Cart not found.');
+//            abort(404, 'Cart not found.');
+            $cart = $this->create_cart($session);
         }
 
         return $cart;
+    }
+
+    /**
+     * Calculate total price of cart
+     *
+     * @param App\Models\Cart $cart
+     * @return float|int
+     */
+    public function get_total_price(Cart $cart)
+    {
+        $total_price = 0;
+
+        $cart_products = CartProduct::cart($cart->id)->get();
+        foreach($cart_products as $cart_product)
+        {
+            $product = Product::find($cart_product->product_id);
+            $total_price += $cart_product->qty*$product->price;
+        }
+
+        return $total_price;
     }
 
     /**
@@ -79,6 +100,9 @@ class CartRepository
 
         if($qty == 3 || $qty+$data['qty'] > 3)
             abort(400, 'Qty would be over limit');
+
+        $cart->updated_at = date('Y-m-d H:i:s');
+        $cart->save();
 
         return CartProduct::factory()->create([
             'cart_id' => $cart->id,
@@ -114,6 +138,9 @@ class CartRepository
         $cart_product = CartProduct::cart($cart->id)->product($product->id)->first();
         $cart_product->qty += $data['qty'];
         $cart_product->save();
+
+        $cart->updated_at = date('Y-m-d H:i:s');
+        $cart->save();
 
         return $cart_product;
     }

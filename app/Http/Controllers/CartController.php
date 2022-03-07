@@ -2,13 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\CartProduct;
-use App\Models\Product;
+use App\Repositories\CartRepository;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    /**
+     * The user repository instance.
+     */
+    protected $cart;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \App\Repositories\CartRepository  $cart
+     * @return void
+     */
+    public function __construct(CartRepository $cart)
+    {
+        $this->cart = $cart;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,30 +32,11 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        $cart = Cart::secureKey($request->session()->get('secure_key'))->first();
+        $cart = $this->cart->get_cart($request->session());
 
         $data['cart_products'] = CartProduct::cart($cart->id)->join('products', 'cart_products.product_id', '=', 'products.id')->select('cart_products.*', 'products.name', 'products.price')->get();
-        $data['total_value'] = $this->get_total_price($cart);
+        $data['total_value'] = $this->cart->get_total_price($cart);
 
         return response()->view('cart', $data);
-    }
-    /**
-     * Calculate total price of cart
-     *
-     * @param App\Models\Cart $cart
-     * @return float|int
-     */
-    public function get_total_price(Cart $cart)
-    {
-        $total_price = 0;
-
-        $cart_products = CartProduct::cart($cart->id)->get();
-        foreach($cart_products as $cart_product)
-        {
-            $product = Product::find($cart_product->product_id);
-            $total_price += $cart_product->qty*$product->price;
-        }
-
-        return $total_price;
     }
 }
