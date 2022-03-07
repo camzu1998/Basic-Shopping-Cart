@@ -2,86 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Request;
-use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
+use App\Models\CartProduct;
+use App\Models\Product;
+use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $cart = Cart::secureKey($request->session()->get('secure_key'))->first();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $data['cart_products'] = CartProduct::cart($cart->id)->join('products', 'cart_products.product_id', '=', 'products.id')->select('cart_products.*', 'products.name', 'products.price')->get();
+        $data['total_value'] = $this->get_total_price($cart);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCartRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return response()->view('cart', $data);
     }
-
     /**
-     * Display the specified resource.
+     * Calculate total price of cart
      *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
+     * @param App\Models\Cart $cart
+     * @return float|int
      */
-    public function show(Cart $cart)
+    public function get_total_price(Cart $cart)
     {
-        //
-    }
+        $total_price = 0;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
+        $cart_products = CartProduct::cart($cart->id)->get();
+        foreach($cart_products as $cart_product)
+        {
+            $product = Product::find($cart_product->product_id);
+            $total_price += $cart_product->qty*$product->price;
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCartRequest  $request
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCartRequest $request, Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Cart $cart)
-    {
-        //
+        return $total_price;
     }
 }
