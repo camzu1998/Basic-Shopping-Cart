@@ -44,6 +44,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="ms-pagination">
+                            {{ $products }}
+                        </div>
                     @else
                         <p>Sorry :(, we does not has any product</p>
                     @endif

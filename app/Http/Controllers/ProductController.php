@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         return response()->view('products_list', [
-            'products' => Product::all()
+            'products' => Product::simplePaginate(3)
         ]);
     }
 
