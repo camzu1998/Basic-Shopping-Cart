@@ -13,7 +13,8 @@
             <div class="row mt-4">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <h3>{{ $product->name }} product card</h3>
+                    <h3>{{ $product->name }} product card</h3><br>
+                    <h6 class="my-2">Price for unit: {{ $product->price }} zł</h6>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -22,8 +23,8 @@
                 <form class="col-6" method="POST" action="/cart/{{ $product->id }}">
                     @csrf
                     <div class="ms-form-group">
-                        <label for="qty">Qty</label>
-                        <input type="number" placeholder="Qty" id="qty" name="qty" value="0" step="1">
+                        <label for="qty">Quantity: </label>
+                        <input type="number" placeholder="Qty" id="qty" name="qty" value="1" min="1" step="1">
                     </div>
                     <div class="ms-form-group"><button class="ms-btn ms-success ms-fullwidth ms-medium" type="submit">Add to cart</button></div>
                 </form>
