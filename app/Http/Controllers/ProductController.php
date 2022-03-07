@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FormProductRequest;
+use App\Models\CartProduct;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -96,6 +97,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        CartProduct::product($product->id)->delete();
         $product->delete();
 
         return redirect('/products')->with('status', 'Product deleted');

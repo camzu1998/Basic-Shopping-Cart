@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCartProductRequest;
+use App\Http\Requests\FormCartProductRequest;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
@@ -28,11 +28,11 @@ class CartProductController extends Controller
     /**
      * Store a newly created cart product in database.
      *
-     * @param  \App\Http\Requests\StoreCartProductRequest  $request
+     * @param  \App\Http\Requests\FormCartProductRequest  $request
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreCartProductRequest $request, Product $product)
+    public function store(FormCartProductRequest $request, Product $product)
     {
         $data = $request->validated();
 
@@ -44,11 +44,11 @@ class CartProductController extends Controller
     /**
      * Update the specified cart product in database.
      *
-     * @param  \App\Http\Requests\StoreCartProductRequest  $request
+     * @param  \App\Http\Requests\FormCartProductRequest  $request
      * @param  \App\Models\CartProduct  $cart_product
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(StoreCartProductRequest $request, CartProduct $cart_product)
+    public function update(FormCartProductRequest $request, CartProduct $cart_product)
     {
         $data = $request->validated();
 
