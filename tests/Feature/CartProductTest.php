@@ -71,7 +71,7 @@ class CartProductTest extends TestCase
      *
      * @return void
      */
-    public function test_update_product_form()
+    public function test_delete_cart_product_from_cart()
     {
         //Creating cart
         $cart = Cart::factory()->create();
