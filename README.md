@@ -1,6 +1,6 @@
 ## Basic Shopping Cart
 
-A basic shopping cart is a web application.
+A basic shopping cart is a web application made on Laravel framework.
 
 <a href="https://wakatime.com/badge/github/camzu1998/Basic-Shopping-Cart"><img src="https://wakatime.com/badge/github/camzu1998/Basic-Shopping-Cart.svg" alt="wakatime"></a>
 
